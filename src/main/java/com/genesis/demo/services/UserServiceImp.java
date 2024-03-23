@@ -1,6 +1,8 @@
 package com.genesis.demo.services;
 
 import com.genesis.demo.models.User;
+import com.genesis.demo.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -8,14 +10,12 @@ import java.util.List;
 
 @Service
 public class UserServiceImp implements UserService{
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public User createUser(User user) {
-        return User.builder()
-                .fullName("Pepito perez")
-                .id(1L)
-                .birthDay(LocalDate.parse("2022-02-22"))
-                .email("pepito@gmail.com")
-                .build();
+        return userRepository.save(user);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class UserServiceImp implements UserService{
 
     @Override
     public List<User> getAllUsers() {
-        return null;
+        return (List<User>) userRepository.findAll();
     }
 
     @Override
