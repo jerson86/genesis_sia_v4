@@ -1,5 +1,8 @@
 package com.genesis.demo.services;
 
+import com.genesis.demo.enums.ErrorMessage;
+import com.genesis.demo.exceptions.AlreadyExistsException;
+import com.genesis.demo.exceptions.NotFoundException;
 import com.genesis.demo.models.User;
 import com.genesis.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +18,18 @@ public class UserServiceImp implements UserService{
 
     @Override
     public User createUser(User user) {
+        Optional<User> userFindByemail = userRepository.findByEmail(user.getEmail());
+        if(userFindByemail.isPresent()){
+            throw new AlreadyExistsException(ErrorMessage.USER_EMAIL_EXISTS.getMessage());
+        }
         return userRepository.save(user);
     }
 
     @Override
-    public User getUserById(Long id) throws Exception {
+    public User getUserById(Long id) {
         Optional<User> user = userRepository.findById(id);
         if(user.isEmpty()){
-            throw new Exception("usuario no encontrado");
+            throw new NotFoundException(ErrorMessage.USER_NOT_FOUND.getMessage());
         }
         return user.get();
     }
@@ -33,14 +40,14 @@ public class UserServiceImp implements UserService{
     }
 
     @Override
-    public User editUser(Long id, User user) throws Exception {
+    public User editUser(Long id, User user) {
         Optional<User> userBd = userRepository.findById(id);
         if(userBd.isEmpty()){
-            throw new Exception("usuario no encontrado");
+            throw new NotFoundException(ErrorMessage.USER_NOT_FOUND.getMessage());
         }
         Optional<User> userFindByemail = userRepository.findByEmail(user.getEmail());
         if(userFindByemail.isPresent()){
-            throw new Exception("Correo ya registrado");
+            throw new AlreadyExistsException(ErrorMessage.USER_EMAIL_EXISTS.getMessage());
         }
         userBd.get().setFullName(user.getFullName());
         userBd.get().setBirthDay(user.getBirthDay());
@@ -49,10 +56,10 @@ public class UserServiceImp implements UserService{
     }
 
     @Override
-    public Boolean deleteUser(Long id) throws Exception {
+    public Boolean deleteUser(Long id) {
         Optional<User> userBd = userRepository.findById(id);
         if(userBd.isEmpty()){
-            throw new Exception("usuario no encontrado");
+            throw new NotFoundException(ErrorMessage.USER_NOT_FOUND.getMessage());
         }
         userRepository.deleteById(id);
         return true;

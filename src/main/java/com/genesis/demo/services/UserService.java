@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface UserService {
     User createUser(User user);
-    User getUserById(Long id) throws Exception;
+    User getUserById(Long id);
     List<User> getAllUsers();
-    User editUser(Long id, User user) throws Exception;
-    Boolean deleteUser(Long id) throws Exception;
+    User editUser(Long id, User user);
+    Boolean deleteUser(Long id);
 }

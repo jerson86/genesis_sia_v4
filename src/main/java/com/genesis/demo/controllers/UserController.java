@@ -21,15 +21,15 @@ public class UserController {
         return userService.getAllUsers();
     }
     @PutMapping("{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User user) throws Exception {
+    public User updateUser(@PathVariable Long id, @RequestBody User user) {
         return userService.editUser(id, user);
     }
     @DeleteMapping("{id}")
-    public Boolean deleteUser(@PathVariable Long id) throws Exception {
+    public Boolean deleteUser(@PathVariable Long id) {
         return userService.deleteUser(id);
     }
     @GetMapping("{id}")
-    public User getUserById(@PathVariable Long id) throws Exception {
+    public User getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 }
