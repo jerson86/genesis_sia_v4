@@ -2,6 +2,8 @@ package com.genesis.demo.controllers;
 
 import com.genesis.demo.models.User;
 import com.genesis.demo.services.UserService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +15,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @PostMapping
-    public User createUser(@RequestBody User user){
+    public User createUser(@Valid @RequestBody User user){
         return userService.createUser(user);
     }
     @GetMapping
@@ -21,15 +23,15 @@ public class UserController {
         return userService.getAllUsers();
     }
     @PutMapping("{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User user) {
+    public User updateUser(@NotNull @PathVariable Long id, @Valid @RequestBody User user) {
         return userService.editUser(id, user);
     }
     @DeleteMapping("{id}")
-    public Boolean deleteUser(@PathVariable Long id) {
+    public Boolean deleteUser(@NotNull @PathVariable Long id) {
         return userService.deleteUser(id);
     }
     @GetMapping("{id}")
-    public User getUserById(@PathVariable Long id) {
+    public User getUserById(@NotNull @PathVariable Long id) {
         return userService.getUserById(id);
     }
 }
