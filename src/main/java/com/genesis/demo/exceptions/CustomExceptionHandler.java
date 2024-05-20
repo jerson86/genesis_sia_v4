@@ -1,6 +1,6 @@
 package com.genesis.demo.exceptions;
 
-import com.genesis.demo.models.dto.ErrorResponse;
+import com.genesis.demo.models.dto.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -17,9 +17,9 @@ import java.util.List;
 @RestControllerAdvice
 public class CustomExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<ErrorResponse> notFoundExceptionHandle(NotFoundException notFoundException){
+    public ResponseEntity<Response> notFoundExceptionHandle(NotFoundException notFoundException){
         return new ResponseEntity<>(
-                ErrorResponse.builder()
+                Response.builder()
                         .date(LocalDate.now())
                         .message(List.of(notFoundException.getMessage()))
                         .statusCode(HttpStatus.NOT_FOUND.toString())
@@ -29,9 +29,9 @@ public class CustomExceptionHandler {
     }
 
     @ExceptionHandler(AlreadyExistsException.class)
-    public ResponseEntity<ErrorResponse> alreadyExistsExceptionHandle(AlreadyExistsException alreadyExistsException){
+    public ResponseEntity<Response> alreadyExistsExceptionHandle(AlreadyExistsException alreadyExistsException){
         return new ResponseEntity<>(
-                ErrorResponse.builder()
+                Response.builder()
                         .date(LocalDate.now())
                         .message(List.of(alreadyExistsException.getMessage()))
                         .statusCode(HttpStatus.CONFLICT.toString())
@@ -41,7 +41,7 @@ public class CustomExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidationExceptions(
+    public ResponseEntity<Response> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
         List<String> errors = new ArrayList<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
@@ -50,7 +50,7 @@ public class CustomExceptionHandler {
             errors.add(fieldName.concat(" "+errorMessage));
         });
         return new ResponseEntity<>(
-                ErrorResponse.builder()
+                Response.builder()
                         .date(LocalDate.now())
                         .message(errors)
                         .statusCode(HttpStatus.BAD_REQUEST.toString())

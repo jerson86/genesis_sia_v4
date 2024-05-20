@@ -1,13 +1,12 @@
 package com.genesis.demo.services;
 
 import com.genesis.demo.models.User;
-
-import java.util.List;
+import com.genesis.demo.models.dto.UserResponse;
 
 public interface UserService {
-    User createUser(User user);
-    User getUserById(Long id);
-    List<User> getAllUsers();
-    User editUser(Long id, User user);
-    Boolean deleteUser(Long id);
+    UserResponse createUser(User user);
+    UserResponse getUserById(Long id);
+    UserResponse getAllUsers();
+    UserResponse editUser(Long id, User user);
+    UserResponse deleteUser(Long id);
 }
